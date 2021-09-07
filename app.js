@@ -54,7 +54,7 @@ app.post("/cadastrarProdutos" , (req, res)=>{ //15 - método informado no formul
     produto.save((err) =>{
         if(err)
             return res.status(500).send("Erro ao cadastrar produto") // 500 erro do servidor
-        return res.redirect("/produtos");
+        res.redirect("/produtos");
 
     })
 })
@@ -69,8 +69,37 @@ app.get("/deletarProduto/:id", (req,res)=>{ //17 - Rota para excluir depois de t
     });
 });
 
-//definindo a porta que irei acessar a minha aplicacao
+app.get("/editarProduto/:id", (req,res)=>{
+    var id = req.params.id;
+	Produtos.findById(id, (err, produto)=>{
+		if(err)
+			return res.status(500).send("Erro ao consultar produto");
+		res.render("formEditarproduto",{produto_item:produto})
+	});
+});
 
+app.post("/editarProduto", (req,res)=>{
+	var id = req.body.id;
+	Produtos.findById(id,(err, produto)=>{
+		if(err)
+			return res.status(500).send("Erro ao consultar produto");
+		produto.nome = req.body.nome;
+		produto.vlUnit = req.body.valor;
+		produto.codigoBarras = req.body.codBarras;
+
+		produto.save(err =>{
+			if(err)
+				return res.status(500).send("Erro ao editar produto");
+			return res.redirect("/produtos");
+			
+		});
+	});
+});
+
+
+
+
+//definindo a porta que irei acessar a minha aplicacao
 app.listen(port, ()=> {
     console.log("Servidor rodando na porta " + port); //4ele faz a escuta e seleciona a porta para enviar o meu conteudo.
 });

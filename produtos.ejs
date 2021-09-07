@@ -10,6 +10,7 @@
 <body>
 
     <section class="container">
+        <div class="alert alert-warning"></div>
         <div class="row">
             <div class="col">
                 <div class="row mt-5">
@@ -34,20 +35,24 @@
                     </thead>
                     <tbody> 
                         <!-- foreach está percorrendo a collection para buscar os itens -->
-                        <% produtos_itens.forEach(function(produto){ %>
+                        <% if(produtos_itens ==""){%>
+                            <tr>
+                                <td colspan="4" class="alert alert-warning"> Nenhum produto cadastrado!</td>
+                            </tr>
+                        <%}else{produtos_itens.forEach(function(produto){ %>
                             <tr>
                                 <!-- aqui efetuamos a chamada para o resultado/valor do banco aparecer -->
                                 <td><%=produto.nome %></td> 
                                 <td><%=produto.vlUnit %></td>
                                 <td><%=produto.codigoBarras %></td>
                                 <td>
-                                    <a href="" class="btn btn-info">Modificar</a>
+                                    <a href="editarProduto/<%=produto._id%>" class="btn btn-info">Editar</a>
                                     <a href="/deletarProduto/<%=produto._id%>" class="btn btn-danger">Excluir</a>   
                                 </td>
                             </tr>
 
 
-                        <% }) %>
+                        <% })} %>
 
                     </tbody>
                     
